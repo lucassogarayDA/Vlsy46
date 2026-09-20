@@ -1,6 +1,6 @@
 #!/data/data/com.termux/files/usr/bin/env python3
 
-#Diccionario
+import os
 
 paquetes = {
     "sistema": {
@@ -13,11 +13,11 @@ paquetes = {
         "tsu": "pkg install tsu",
     },
     "red": {
-       "curl": "pkg install curl",
-       "wget": "pkg install wget",
-       "openssh": "pkg install openssh",
-       "nmap": "pkg install nmap",
-       "tor": "pkg install tor",
+        "curl": "pkg install curl",
+        "wget": "pkg install wget",
+        "openssh": "pkg install openssh",
+        "nmap": "pkg install nmap",
+        "tor": "pkg install tor",
     },
     "lenguaje": {
         "nodejs": "pkg install nodejs",
@@ -52,7 +52,7 @@ paquetes = {
         "opencv-python": "pip install opencv-python",
     },
     "formatos": {
-        "hbf-hyper": "pip install hbf-hyper",
+        "vjor": "pip install vjor",
         "pyyaml": "pip install pyyaml",
         "xmltodict": "pip install xmltodict",
         "openpyxl": "pip install openpyxl",
@@ -173,35 +173,44 @@ paquetes = {
 }
 
 
-#Menu
+def limpiar():
+    os.system("clear")
 
-print("—————————————————————Vlsy46———————————————————————")
-print("version: 1.0.1")
-print("Creado por Lucas Sogaray")
 
-while True:
+def main():
+    print("—————————————————————Vlsy46———————————————————————")
+    print("version: 1.0.2")
+    print("Creado por Lucas Sogaray")
 
-    print("\nCategorías disponibles:\n")
-    categorias = list(paquetes.keys())
-    for i, categoria in enumerate(categorias, start=1):
-        print(f"{i}. {categoria}")
-    print("0. Salir")
+    while True:
+        print("\nCategorías disponibles:\n")
+        categorias = list(paquetes.keys())
+        for i, categoria in enumerate(categorias, start=1):
+            print(f"{i}. {categoria}")
+        print("0. Salir")
 
-    try:
-        opcion = int(input("\nElige una categoría: "))
-    except ValueError:
-        print("Escribe un número, por favor.")
-        continue
+        opcion = input("\nElige una categoría: ")
 
-    if opcion == 0:
-        print("¡Hasta luego!")
-        break
+        if opcion == "0":
+            print("¡Hasta luego!")
+            break
 
-    if 1 <= opcion <= len(categorias):
-        categoria_elegida = categorias[opcion - 1]
-        print(f"\n=== {categoria_elegida.upper()} ===\n")
-        for nombre, comando in paquetes[categoria_elegida].items():
-            print(f"- {nombre}: {comando}")
-        input("\nPresiona Enter para volver al menú...")
-    else:
-        print("Opción no válida.")
+        try:
+            opcion = int(opcion)
+        except ValueError:
+            print("Escribe un número, por favor.")
+            continue
+
+        if 1 <= opcion <= len(categorias):
+            categoria_elegida = categorias[opcion - 1]
+            print(f"\n=== {categoria_elegida.upper()} ===\n")
+            for nombre, comando in paquetes[categoria_elegida].items():
+                print(f"- {nombre}: {comando}")
+            input("\nPresiona Enter para volver al menú...")
+        else:
+            print("Opción no válida.")
+        limpiar()
+
+
+if __name__ == "__main__":
+    main()
