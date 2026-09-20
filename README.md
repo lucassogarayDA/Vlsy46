@@ -51,13 +51,15 @@ ciencia SymPy, NLTK, spaCy, Biopython, Astropy
 Cloud Boto3, Google Cloud Storage, Azure Storage Blob
 fechas Arrow, Pendulum, Python-DateUtil, PyTZ
 
+#129 paquetes en total.
+
 ---
 
 🖥️ Ejemplo de uso
 
 ```
 —————————————————————Vlsy46———————————————————————
-version: 1.0.1
+version: 1.0.2
 Creado por Lucas Sogaray
 
 Categorías disponibles:
@@ -117,4 +119,4 @@ MIT licence - ✨
 👤 Autor
 
 Lucas Sogaray
-Versión 1.0.1
+Versión 1.0.2
