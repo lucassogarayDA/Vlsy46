@@ -1,23 +1,62 @@
 # Vlsy46
 
-Vlsy46 es una herramienta de línea de comandos escrita en Python que funciona como un catálogo interactivo de paquetes y comandos de instalación para Termux. Organiza los paquetes por categorías y permite consultar sus comandos sin tener que recordar su sintaxis.
+Vlsy46 es una herramienta de línea de comandos escrita en Python para explorar un catálogo interactivo de paquetes de Termux y Python. Organiza los paquetes por categorías, permite buscarlos, mantiene el catálogo sincronizado y puede iniciar instalaciones confirmadas desde la propia interfaz.
 
-- **Versión:** 1.2.0
+- **Versión:** 2.0.0
+- **Tipo de lanzamiento:** Major Update
 - **Autor:** Lucas Sogaray
 - **Lenguaje:** Python 3
-- **Dependencias externas:** ninguna para ejecutar el catálogo
+- **Dependencias externas para ejecutar Vlsy46:** ninguna
 
-## Características
+## Novedades de la versión 2.0.0
 
-- Catálogo organizado en categorías.
+### Catálogo ampliado: 250 paquetes
+
+El catálogo remoto incluye **250 paquetes distribuidos en 34 categorías**. Combina herramientas disponibles mediante el gestor de paquetes de Termux (`pkg`) con paquetes de Python instalables mediante `pip`.
+
+Las categorías abarcan, entre otras, sistema, redes, lenguajes, bases de datos, servidores, multimedia, formatos, datos, desarrollo, compilación, documentación, configuración, terminal y testing.
+
+Cada entrada relaciona el nombre del paquete con su comando de instalación. La disponibilidad y compatibilidad de cada paquete dependen de Termux, la versión de Python, la arquitectura y las dependencias que requiera.
+
+### AutoSync: sincronización del catálogo
+
+AutoSync permite consultar y actualizar el catálogo remoto sin tener que editar manualmente la lista local.
+
+- **Comprobación automática:** al iniciar Vlsy46 en una terminal interactiva.
+- **Comprobación manual:** selecciona la opción `U` en el menú principal.
+- **Comparación de cambios:** informa cuántos paquetes son nuevos, cuántos comandos cambiaron y cuántos paquetes fueron retirados.
+- **Confirmación antes de aplicar:** los cambios no se guardan hasta que el usuario los acepta.
+- **Validación del catálogo:** comprueba la estructura, la versión del esquema y los datos recibidos antes de aceptarlos.
+- **Caché local:** guarda el último catálogo aceptado para conservarlo entre ejecuciones y poder seguir usando los datos disponibles si no hay conexión.
+- **Guardado seguro:** escribe primero un archivo temporal y después reemplaza la caché.
+
+AutoSync actualiza los datos del catálogo; **no instala paquetes por sí solo**.
+
+### Package Runner: instala desde el catálogo
+
+Package Runner permite iniciar la instalación de un paquete directamente desde su categoría.
+
+1. Entra en una categoría.
+2. Selecciona el número del paquete.
+3. Revisa el gestor, el nombre y el comando que se ejecutará.
+4. Confirma la operación escribiendo `s`, `si` o `sí`. La opción predeterminada es no.
+5. Vlsy46 inicia el gestor correspondiente y muestra el resultado de la operación.
+
+Se admiten dos gestores:
+
+- **Termux (`pkg`):** ejecuta instalaciones con `pkg install`.
+- **Python (`pip`):** ejecuta `python -m pip install` usando el mismo intérprete de Python con el que se inició Vlsy46.
+
+Por seguridad, el comando del catálogo se valida y se convierte en argumentos separados para el proceso. No se ejecuta mediante una shell, y no se aceptan cadenas con comandos adicionales.
+
+### Otras funciones
+
 - Menú interactivo con recuento de categorías y paquetes.
-- Vista detallada de los paquetes de cada categoría.
-- **Búsqueda global** por nombre de paquete o por categoría.
-- **Package Runner:** permite seleccionar un paquete desde su categoría, revisar el comando y confirmar su instalación mediante `pkg` o `pip`.
-- Interfaz con colores ANSI para distinguir títulos, opciones, comandos y mensajes.
-- Los colores se desactivan cuando la salida no es una terminal interactiva o cuando está definida la variable de entorno `NO_COLOR`.
-- Validación de las opciones ingresadas y manejo de cancelaciones con `Ctrl+C` o fin de entrada.
-- Limpieza de pantalla adaptada a Windows y otros sistemas, cuando corresponde.
+- Vista de paquetes y comandos dentro de cada categoría.
+- Búsqueda global por nombre de paquete o categoría, sin distinguir mayúsculas y minúsculas.
+- Interfaz con colores ANSI, desactivados cuando la salida no es una terminal interactiva o está definida la variable `NO_COLOR`.
+- Validación de entradas y manejo de cancelaciones con `Ctrl+C` o fin de entrada.
+- Limpieza de pantalla adaptada al sistema cuando corresponde.
 
 ## Instalación y uso
 
@@ -40,19 +79,23 @@ En Termux también puedes usar:
 python Vlsy46.py
 ```
 
-No hace falta instalar paquetes adicionales de Python para ejecutar Vlsy46.
+Para actualizar una copia existente desde la rama principal:
+
+```bash
+git pull origin main
+```
+
+No hace falta instalar dependencias adicionales de Python para ejecutar el catálogo. Los gestores `pkg` y `pip` se necesitan cuando se desea instalar paquetes desde Package Runner.
 
 ## Cómo usar el menú
 
-- Ingresa el número de una categoría para ver sus paquetes.
-- Dentro de una categoría, selecciona el número de un paquete para revisar su comando e iniciar una instalación confirmada.
-- Escribe **0** para volver al catálogo desde la lista de paquetes.
-- Escribe **B** para abrir la búsqueda global.
-- En la búsqueda, escribe el nombre de un paquete o una parte del nombre de una categoría.
-- Escribe **0** para salir.
-- Presiona Enter en las pantallas de resultados para volver al catálogo.
+- **Número de categoría:** abre la categoría correspondiente.
+- **Número de paquete:** muestra los detalles e inicia el flujo de Package Runner.
+- **B:** abre la búsqueda global.
+- **U:** comprueba si hay una actualización del catálogo.
+- **0:** vuelve desde una categoría o sale del programa, según la pantalla.
 
-La búsqueda no distingue entre mayúsculas y minúsculas. Si no encuentra coincidencias, muestra un aviso.
+Al abrir una categoría, selecciona un paquete para revisar su comando. Package Runner siempre solicita confirmación antes de ejecutar la instalación.
 
 ## Estructura del proyecto
 
@@ -60,40 +103,41 @@ La búsqueda no distingue entre mayúsculas y minúsculas. Si no encuentra coinc
 Vlsy46/
 ├── Vlsy46.py
 ├── catalogo.py
+├── catalogo.json
+├── autosync.py
 └── README.md
 ```
 
-- **`Vlsy46.py`:** contiene la interfaz, el menú, la búsqueda y el manejo de entradas.
-- **`catalogo.py`:** contiene el diccionario `paquetes`, organizado por categorías. Cada paquete se asocia con el comando que permite instalarlo.
+- **`Vlsy46.py`:** interfaz, menú, búsqueda, selección de paquetes y Package Runner.
+- **`catalogo.py`:** catálogo local de respaldo y carga de la última caché aceptada.
+- **`catalogo.json`:** catálogo remoto versionado que AutoSync consulta.
+- **`autosync.py`:** descarga, validación y almacenamiento de la caché del catálogo.
+- **`catalogo_cache.json`:** archivo local generado al aceptar una actualización; no es necesario crearlo manualmente.
 
-El menú obtiene las categorías y los recuentos directamente del catálogo, por lo que se actualizan al agregar o quitar entradas.
+## Agregar o modificar paquetes
 
-## Agregar paquetes o categorías
+El catálogo remoto se mantiene en `catalogo.json`. Cada categoría contiene nombres de paquetes asociados a comandos compatibles con los gestores admitidos.
 
-Edita `catalogo.py` y agrega una entrada al diccionario `paquetes`.
+Ejemplo de una categoría:
 
-Ejemplo de una categoría nueva:
-
-```python
-paquetes["mi_categoria"] = {
-    "paquete1": "pkg install paquete1",
-    "paquete2": "pip install paquete2",
+```json
+{
+  "mi_categoria": {
+    "paquete-termux": "pkg install paquete-termux",
+    "paquete-python": "pip install paquete-python"
+  }
 }
 ```
 
-También puedes agregar un paquete dentro de una categoría existente:
+Al publicar cambios en el catálogo remoto, incrementa `catalog_version` para que AutoSync pueda detectar la actualización. Mantén `schema_version` en el valor compatible con la versión actual de Vlsy46.
 
-```python
-paquetes["utilidades"]["mi_paquete"] = "pip install mi_paquete"
-```
+## Seguridad y compatibilidad
 
-Asegúrate de que el comando corresponda al gestor y al entorno donde se utilizará.
+Vlsy46 no instala paquetes automáticamente. Package Runner muestra qué gestor y paquete se utilizarán y requiere confirmación explícita antes de ejecutar la instalación.
 
-## Importante
+Las instalaciones pueden modificar el entorno de Termux o Python, consumir almacenamiento, requerir conexión o necesitar dependencias adicionales. Revisa cada paquete antes de confirmar. No todos los paquetes de Python publicados en PyPI son compatibles con Android o Termux, especialmente los que necesitan componentes nativos.
 
-Vlsy46 no ejecuta instalaciones automáticamente. Package Runner muestra el comando y solicita confirmación antes de iniciar `pkg install` o `python -m pip install`. Los comandos se ejecutan como argumentos separados, sin utilizar una shell.
-
-Las instalaciones pueden modificar el entorno de Termux/Python y requerir conexión, espacio o dependencias adicionales. Revisa el paquete y confirma solo si deseas instalarlo. La compatibilidad de cada paquete depende del dispositivo y del entorno.
+AutoSync solo actualiza el catálogo después de validar los datos y recibir confirmación. Si no puede consultar el catálogo remoto, Vlsy46 puede utilizar el catálogo local o la última caché aceptada.
 
 ## Licencia
 
