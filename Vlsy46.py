@@ -151,7 +151,7 @@ def mostrar_categoria(categoria):
 def sincronizar_catalogo(origen):
     global paquetes, VERSION_CATALOGO
 
-    print("\\n" + estilo("AUTOSYNC", "cian", "negrita"))
+    print("\n" + estilo("AUTOSYNC", "cian", "negrita"))
     print(estilo("Consultando el catálogo remoto...", "gris"))
 
     try:
@@ -241,7 +241,7 @@ def main():
             continue
 
         if not opcion.isdigit():
-            pausar("\nEntrada no válida. Escribe un número o B. Presiona Enter...")
+            pausar("\nEntrada no válida. Escribe un número, B o U. Presiona Enter...")
             continue
 
         numero = int(opcion)
