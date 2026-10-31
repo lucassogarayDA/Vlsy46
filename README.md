@@ -2,7 +2,7 @@
 
 Vlsy46 es una herramienta de línea de comandos escrita en Python que funciona como un catálogo interactivo de paquetes y comandos de instalación para Termux. Organiza los paquetes por categorías y permite consultar sus comandos sin tener que recordar su sintaxis.
 
-- **Versión:** 1.0.2
+- **Versión:** 1.1.0
 - **Autor:** Lucas Sogaray
 - **Lenguaje:** Python 3
 - **Dependencias externas:** ninguna para ejecutar el catálogo
