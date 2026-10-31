@@ -1,122 +1,101 @@
-Vlsy46 es una herramienta de línea de comandos escrita en Python que funciona como un catálogo organizado de comandos de instalación para Termux y Python. Permite consultar rápidamente el comando necesario para instalar paquetes agrupados por categorías como redes, lenguajes, bases de datos, machine learning, seguridad, entre muchas otras.
+# Vlsy46
 
-· Versión: 1.0.2
-· Autor: Lucas Sogaray
+Vlsy46 es una herramienta de línea de comandos escrita en Python que funciona como un catálogo interactivo de paquetes y comandos de instalación para Termux. Organiza los paquetes por categorías y permite consultar sus comandos sin tener que recordar su sintaxis.
 
----
+- **Versión:** 1.0.2
+- **Autor:** Lucas Sogaray
+- **Lenguaje:** Python 3
+- **Dependencias externas:** ninguna para ejecutar el catálogo
 
-📋 Descripción
+## Características
 
-Vlsy46 presenta un menú interactivo en consola donde el usuario elige una categoría y obtiene una lista de paquetes junto con el comando exacto para instalarlos.
+- Catálogo organizado en categorías.
+- Menú interactivo con recuento de categorías y paquetes.
+- Vista detallada de los paquetes de cada categoría.
+- **Búsqueda global** por nombre de paquete o por categoría.
+- Interfaz con colores ANSI para distinguir títulos, opciones, comandos y mensajes.
+- Los colores se desactivan cuando la salida no es una terminal interactiva o cuando está definida la variable de entorno `NO_COLOR`.
+- Validación de las opciones ingresadas y manejo de cancelaciones con `Ctrl+C` o fin de entrada.
+- Limpieza de pantalla adaptada a Windows y otros sistemas, cuando corresponde.
 
----
+## Instalación y uso
 
-🚀 Instalación y uso
+Clona el repositorio:
 
-1. Ejecutar:
-   
-   python3 Vlsy46.py
-
-   o directamente:
-   vlsy46
-   
-5. Selecciona una categoría ingresando su número y presiona Enter.
-6. Para salir, elige la opción 0.
-
----
-
-🗂️ Categorías disponibles
-
-Categoría Descripción
-sistema Herramientas básicas del sistema (git, nano, vim, htop, etc.)
-red Utilidades de red (curl, wget, openssh, nmap, tor)
-lenguaje Lenguajes de programación (nodejs, golang, rust, ruby, php, etc.)
-bases de datos SQLite, MariaDB, PostgreSQL y clientes Python
-servidores Nginx, Apache, Lighttpd, Caddy, Gunicorn, Uvicorn
-multimedia FFmpeg, ImageMagick, Pillow, OpenCV
-formatos Manejo de YAML, XML, Excel, PDF, DOCX, etc.
-diversion Comandos de entretenimiento (cmatrix, sl, cowsay, figlet...)
-datos NumPy, Pandas, Matplotlib, Seaborn, SciPy
-web Requests, Flask, Django, FastAPI, Scrapy, Selenium
-machine learning Scikit-learn, TensorFlow, Torch, Keras
-utilidades Tqdm, PyFiglet, Faker, Rich, Pygments, etc.
-seguridad Cryptography, Bcrypt, PyJWT, Passlib, PyOpenSSL
-testing Pytest, Tox, Coverage, Hypothesis
-automatizacion PyAutoGUI, Keyboard, Pynput, Psutil
-publicacion Twine, Build, Wheel, Poetry, Hatch
-GUI Kivy, CustomTkinter, PyQt5, PySide6
-juegos Pygame, Arcade, Pyglet
-CLI Click, Typer, Rich, Colorama, Tabulate
-ciencia SymPy, NLTK, spaCy, Biopython, Astropy
-Cloud Boto3, Google Cloud Storage, Azure Storage Blob
-fechas Arrow, Pendulum, Python-DateUtil, PyTZ
-
-#129 paquetes en total.
-
----
-
-🖥️ Ejemplo de uso
-
-```
-—————————————————————Vlsy46———————————————————————
-version: 1.0.2
-Creado por Lucas Sogaray
-
-Categorías disponibles:
-
-1. sistema
-2. red
-3. lenguaje
-...
-0. Salir
-
-Elige una categoría: 2
-
-=== RED ===
-
-- curl: pkg install curl
-- wget: pkg install wget
-- openssh: pkg install openssh
-- nmap: pkg install nmap
-- tor: pkg install tor
-
-Presiona Enter para volver al menú...
+```bash
+git clone https://github.com/lucassogarayDA/Vlsy46.git
+cd Vlsy46
 ```
 
----
+Ejecuta el programa con Python 3:
 
-🛠️ Estructura del código
+```bash
+python3 Vlsy46.py
+```
 
-El programa se basa en un diccionario anidado llamado paquetes, donde:
+En Termux también puedes usar:
 
-· La clave externa es el nombre de la categoría.
-· El valor es otro diccionario con nombre_paquete: comando_de_instalación.
+```bash
+python Vlsy46.py
+```
 
-El menú recorre dinámicamente las claves del diccionario, por lo que agregar nuevas categorías o paquetes es tan simple como editar el diccionario.
+No hace falta instalar paquetes adicionales de Python para ejecutar Vlsy46.
 
-Ejemplo de extensión
+## Cómo usar el menú
 
-paquetes["nueva_categoria"] = {
+- Ingresa el número de una categoría para ver sus paquetes y comandos.
+- Escribe **B** para abrir la búsqueda global.
+- En la búsqueda, escribe el nombre de un paquete o una parte del nombre de una categoría.
+- Escribe **0** para salir.
+- Presiona Enter en las pantallas de resultados para volver al catálogo.
+
+La búsqueda no distingue entre mayúsculas y minúsculas. Si no encuentra coincidencias, muestra un aviso.
+
+## Estructura del proyecto
+
+```text
+Vlsy46/
+├── Vlsy46.py
+├── catalogo.py
+└── README.md
+```
+
+- **`Vlsy46.py`:** contiene la interfaz, el menú, la búsqueda y el manejo de entradas.
+- **`catalogo.py`:** contiene el diccionario `paquetes`, organizado por categorías. Cada paquete se asocia con el comando que permite instalarlo.
+
+El menú obtiene las categorías y los recuentos directamente del catálogo, por lo que se actualizan al agregar o quitar entradas.
+
+## Agregar paquetes o categorías
+
+Edita `catalogo.py` y agrega una entrada al diccionario `paquetes`.
+
+Ejemplo de una categoría nueva:
+
+```python
+paquetes["mi_categoria"] = {
     "paquete1": "pkg install paquete1",
     "paquete2": "pip install paquete2",
 }
+```
 
+También puedes agregar un paquete dentro de una categoría existente:
 
----
+```python
+paquetes["utilidades"]["mi_paquete"] = "pip install mi_paquete"
+```
 
-⚠️ Notas
+Asegúrate de que el comando corresponda al gestor y al entorno donde se utilizará.
 
-· Los comandos no se ejecutan automáticamente; el script solo los muestra para que el usuario los copie y ejecute manualmente.
+## Importante
 
----
+Vlsy46 **no ejecuta comandos ni instala paquetes automáticamente**. Solo muestra los comandos para que puedas revisarlos y decidir si quieres copiarlos y ejecutarlos manualmente.
 
-📄 Licencia
+Comprueba siempre que cada comando sea adecuado para tu dispositivo, versión de Termux o entorno de Python antes de ejecutarlo.
 
-MIT licence - ✨
+## Licencia
 
----
+MIT
 
-👤 Autor
+## Autor
 
 Lucas Sogaray
-Versión 1.0.2
