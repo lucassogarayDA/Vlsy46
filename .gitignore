@@ -216,3 +216,7 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Caché local generada por Vlsy46 AutoSync
+catalogo_cache.json
+catalogo.json.tmp
