@@ -1,6 +1,7 @@
-#!/data/data/com.termux/files/usr/bin/env python3
+#!/usr/bin/env python3
 
 import os
+import shutil
 import sys
 
 from catalogo import paquetes
@@ -16,7 +17,7 @@ COLORES = {
     "reset": "\033[0m",
 }
 
-COLORES_ACTIVOS = sys.stdout.isatty()
+COLORES_ACTIVOS = sys.stdout.isatty() and os.environ.get("NO_COLOR") is None
 
 
 def estilo(texto, *colores):
@@ -27,7 +28,24 @@ def estilo(texto, *colores):
 
 
 def limpiar():
-    os.system("clear")
+    if not sys.stdout.isatty():
+        return
+
+    comando = "cls" if os.name == "nt" else "clear"
+    if shutil.which(comando):
+        os.system(comando)
+
+
+def leer_entrada(mensaje):
+    try:
+        return input(mensaje).strip()
+    except (EOFError, KeyboardInterrupt):
+        print("\n" + estilo("Operación cancelada. ¡Hasta luego!", "amarillo"))
+        raise SystemExit(0)
+
+
+def pausar(mensaje):
+    leer_entrada(estilo(mensaje, "amarillo"))
 
 
 def mostrar_encabezado():
@@ -55,10 +73,10 @@ def mostrar_busqueda():
     mostrar_encabezado()
     print("\n" + estilo("BÚSQUEDA GLOBAL", "cian", "negrita"))
     print(estilo("Busca por nombre de paquete o categoría.", "gris"))
-    consulta = input("\n" + estilo("Buscar: ", "amarillo")).strip()
+    consulta = leer_entrada("\n" + estilo("Buscar: ", "amarillo"))
 
     if not consulta:
-        input("\n" + estilo("La búsqueda está vacía. Presiona Enter...", "rojo"))
+        pausar("\nLa búsqueda está vacía. Presiona Enter para continuar...")
         return
 
     resultados = buscar_paquetes(consulta)
@@ -80,7 +98,7 @@ def mostrar_busqueda():
             print(f"    {estilo(comando, 'cian')}\n")
 
     print(estilo("────────────────────────────────────────────────", "gris"))
-    input(estilo("Presiona Enter para volver al catálogo...", "amarillo"))
+    pausar("Presiona Enter para volver al catálogo...")
 
 
 def mostrar_menu():
@@ -125,14 +143,14 @@ def mostrar_categoria(categoria):
         print(f"    {estilo(comando, 'cian')}")
 
     print("\n" + estilo("────────────────────────────────────────────────", "gris"))
-    input(estilo("Presiona Enter para volver al catálogo...", "amarillo"))
+    pausar("Presiona Enter para volver al catálogo...")
 
 
 def main():
     while True:
         limpiar()
         categorias = mostrar_menu()
-        opcion = input("\n" + estilo("Selecciona una categoría o B para buscar: ", "amarillo")).strip()
+        opcion = leer_entrada("\n" + estilo("Selecciona una categoría o B para buscar: ", "amarillo"))
 
         if opcion == "0":
             print("\n" + estilo("¡Hasta luego!", "verde", "negrita"))
@@ -143,15 +161,18 @@ def main():
             continue
 
         if not opcion.isdigit():
-            input("\n" + estilo("Entrada no válida. Escribe un número o B. Presiona Enter...", "rojo"))
+            pausar("\nEntrada no válida. Escribe un número o B. Presiona Enter...")
             continue
 
         numero = int(opcion)
         if 1 <= numero <= len(categorias):
             mostrar_categoria(categorias[numero - 1])
         else:
-            input("\n" + estilo("Opción fuera del menú. Presiona Enter para continuar...", "rojo"))
+            pausar("\nOpción fuera del menú. Presiona Enter para continuar...")
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except BrokenPipeError:
+        pass
