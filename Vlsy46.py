@@ -1,8 +1,29 @@
 #!/data/data/com.termux/files/usr/bin/env python3
 
 import os
+import sys
 
 from catalogo import paquetes
+
+
+COLORES = {
+    "cian": "\033[96m",
+    "verde": "\033[92m",
+    "amarillo": "\033[93m",
+    "rojo": "\033[91m",
+    "gris": "\033[90m",
+    "negrita": "\033[1m",
+    "reset": "\033[0m",
+}
+
+COLORES_ACTIVOS = sys.stdout.isatty()
+
+
+def estilo(texto, *colores):
+    if not COLORES_ACTIVOS:
+        return str(texto)
+    prefijo = "".join(COLORES[color] for color in colores)
+    return f"{prefijo}{texto}{COLORES['reset']}"
 
 
 def limpiar():
@@ -10,11 +31,11 @@ def limpiar():
 
 
 def mostrar_encabezado():
-    print("╔══════════════════════════════════════════════╗")
-    print("║                    Vlsy46                    ║")
-    print("║                   versión 1.0.2              ║")
-    print("║              Creado por Lucas Sogaray        ║")
-    print("╚══════════════════════════════════════════════╝")
+    print(estilo("╔══════════════════════════════════════════════╗", "cian"))
+    print(estilo("║                    Vlsy46                    ║", "cian", "negrita"))
+    print(estilo("║                   versión 1.0.2              ║", "gris"))
+    print(estilo("║              Creado por Lucas Sogaray        ║", "gris"))
+    print(estilo("╚══════════════════════════════════════════════╝", "cian"))
 
 
 def mostrar_menu():
@@ -22,16 +43,22 @@ def mostrar_menu():
     total_paquetes = sum(len(lista) for lista in paquetes.values())
 
     mostrar_encabezado()
-    print("\nCATÁLOGO DE PAQUETES")
-    print("────────────────────────────────────────────────")
-    print(f"Categorías: {len(categorias)}  |  Paquetes: {total_paquetes}\n")
+    print("\n" + estilo("CATÁLOGO DE PAQUETES", "cian", "negrita"))
+    print(estilo("────────────────────────────────────────────────", "gris"))
+    print(
+        f"{estilo('Categorías:', 'gris')} {estilo(len(categorias), 'amarillo', 'negrita')}"
+        f"  |  {estilo('Paquetes:', 'gris')} {estilo(total_paquetes, 'verde', 'negrita')}\n"
+    )
 
     for numero, categoria in enumerate(categorias, start=1):
         cantidad = len(paquetes[categoria])
-        print(f"  {numero:>2}. {categoria:<22} [{cantidad} paquetes]")
+        numero_texto = estilo(f"{numero:>2}.", "amarillo")
+        categoria_texto = estilo(f"{categoria:<22}", "verde")
+        cantidad_texto = estilo(f"[{cantidad} paquetes]", "gris")
+        print(f"  {numero_texto} {categoria_texto} {cantidad_texto}")
 
-    print("\n   0. Salir")
-    print("────────────────────────────────────────────────")
+    print("\n  " + estilo("0. Salir", "rojo"))
+    print(estilo("────────────────────────────────────────────────", "gris"))
     return categorias
 
 
@@ -40,37 +67,40 @@ def mostrar_categoria(categoria):
 
     limpiar()
     mostrar_encabezado()
-    print(f"\n{categoria.upper()}")
-    print("────────────────────────────────────────────────")
-    print(f"Paquetes disponibles: {len(lista_paquetes)}\n")
+    print("\n" + estilo(categoria.upper(), "cian", "negrita"))
+    print(estilo("────────────────────────────────────────────────", "gris"))
+    print(
+        f"{estilo('Paquetes disponibles:', 'gris')} "
+        f"{estilo(len(lista_paquetes), 'verde', 'negrita')}\n"
+    )
 
     for nombre, comando in lista_paquetes.items():
-        print(f"  • {nombre}")
-        print(f"    {comando}")
+        print(f"  {estilo('•', 'amarillo')} {estilo(nombre, 'verde', 'negrita')}")
+        print(f"    {estilo(comando, 'cian')}")
 
-    print("\n────────────────────────────────────────────────")
-    input("Presiona Enter para volver al catálogo...")
+    print("\n" + estilo("────────────────────────────────────────────────", "gris"))
+    input(estilo("Presiona Enter para volver al catálogo...", "amarillo"))
 
 
 def main():
     while True:
         limpiar()
         categorias = mostrar_menu()
-        opcion = input("\nSelecciona una categoría: ").strip()
+        opcion = input("\n" + estilo("Selecciona una categoría: ", "amarillo")).strip()
 
         if opcion == "0":
-            print("\n¡Hasta luego!")
+            print("\n" + estilo("¡Hasta luego!", "verde", "negrita"))
             break
 
         if not opcion.isdigit():
-            input("\nEntrada no válida. Escribe un número. Presiona Enter...")
+            input("\n" + estilo("Entrada no válida. Escribe un número. Presiona Enter...", "rojo"))
             continue
 
         numero = int(opcion)
         if 1 <= numero <= len(categorias):
             mostrar_categoria(categorias[numero - 1])
         else:
-            input("\nOpción fuera del menú. Presiona Enter para continuar...")
+            input("\n" + estilo("Opción fuera del menú. Presiona Enter para continuar...", "rojo"))
 
 
 if __name__ == "__main__":
