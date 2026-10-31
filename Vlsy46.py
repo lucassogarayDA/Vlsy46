@@ -226,7 +226,7 @@ def main():
     while True:
         limpiar()
         categorias = mostrar_menu()
-        opcion = leer_entrada("\n" + estilo("Selecciona una categoría o B para buscar: ", "amarillo"))
+        opcion = leer_entrada("\n" + estilo("Selecciona una categoría, B para buscar o U para actualizar: ", "amarillo"))
 
         if opcion == "0":
             print("\n" + estilo("¡Hasta luego!", "verde", "negrita"))
