@@ -146,15 +146,3 @@ MIT
 ## Autor
 
 Lucas Sogaray
-
-
-## Instalación desde PyPI
-
-Cuando la versión 2.0.0 esté publicada en PyPI, se podrá instalar con:
-
-```bash
-python -m pip install vlsy46
-vlsy46
-```
-
-El paquete incluye el catálogo inicial. AutoSync puede consultar el catálogo remoto y guarda su caché en el directorio de usuario `~/.cache/vlsy46` (o en la ruta indicada por `VLSY46_CACHE_DIR`). La caché no se escribe dentro de los archivos instalados del paquete.
