@@ -9,39 +9,68 @@ def limpiar():
     os.system("clear")
 
 
+def mostrar_encabezado():
+    print("╔══════════════════════════════════════════════╗")
+    print("║                    Vlsy46                    ║")
+    print("║                   versión 1.0.2              ║")
+    print("║              Creado por Lucas Sogaray        ║")
+    print("╚══════════════════════════════════════════════╝")
+
+
+def mostrar_menu():
+    categorias = list(paquetes.keys())
+    total_paquetes = sum(len(lista) for lista in paquetes.values())
+
+    mostrar_encabezado()
+    print("\nCATÁLOGO DE PAQUETES")
+    print("────────────────────────────────────────────────")
+    print(f"Categorías: {len(categorias)}  |  Paquetes: {total_paquetes}\n")
+
+    for numero, categoria in enumerate(categorias, start=1):
+        cantidad = len(paquetes[categoria])
+        print(f"  {numero:>2}. {categoria:<22} [{cantidad} paquetes]")
+
+    print("\n   0. Salir")
+    print("────────────────────────────────────────────────")
+    return categorias
+
+
+def mostrar_categoria(categoria):
+    lista_paquetes = paquetes[categoria]
+
+    limpiar()
+    mostrar_encabezado()
+    print(f"\n{categoria.upper()}")
+    print("────────────────────────────────────────────────")
+    print(f"Paquetes disponibles: {len(lista_paquetes)}\n")
+
+    for nombre, comando in lista_paquetes.items():
+        print(f"  • {nombre}")
+        print(f"    {comando}")
+
+    print("\n────────────────────────────────────────────────")
+    input("Presiona Enter para volver al catálogo...")
+
+
 def main():
-    print("—————————————————————Vlsy46———————————————————————")
-    print("version: 1.0.2")
-    print("Creado por Lucas Sogaray")
-
     while True:
-        print("\nCategorías disponibles:\n")
-        categorias = list(paquetes.keys())
-        for i, categoria in enumerate(categorias, start=1):
-            print(f"{i}. {categoria}")
-        print("0. Salir")
-
-        opcion = input("\nElige una categoría: ")
+        limpiar()
+        categorias = mostrar_menu()
+        opcion = input("\nSelecciona una categoría: ").strip()
 
         if opcion == "0":
-            print("¡Hasta luego!")
+            print("\n¡Hasta luego!")
             break
 
-        try:
-            opcion = int(opcion)
-        except ValueError:
-            print("Escribe un número, por favor.")
+        if not opcion.isdigit():
+            input("\nEntrada no válida. Escribe un número. Presiona Enter...")
             continue
 
-        if 1 <= opcion <= len(categorias):
-            categoria_elegida = categorias[opcion - 1]
-            print(f"\n=== {categoria_elegida.upper()} ===\n")
-            for nombre, comando in paquetes[categoria_elegida].items():
-                print(f"- {nombre}: {comando}")
-            input("\nPresiona Enter para volver al menú...")
+        numero = int(opcion)
+        if 1 <= numero <= len(categorias):
+            mostrar_categoria(categorias[numero - 1])
         else:
-            print("Opción no válida.")
-        limpiar()
+            input("\nOpción fuera del menú. Presiona Enter para continuar...")
 
 
 if __name__ == "__main__":
