@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
 import os
+import re
 import shutil
+import subprocess
 import sys
 
 from catalogo import paquetes, VERSION_CATALOGO
@@ -52,7 +54,7 @@ def pausar(mensaje):
 def mostrar_encabezado():
     print(estilo("╔══════════════════════════════════════════════╗", "cian"))
     print(estilo("║                    Vlsy46                    ║", "cian", "negrita"))
-    print(estilo("║                   versión 1.1.0              ║", "gris"))
+    print(estilo("║                   versión 1.2.0              ║", "gris"))
     print(estilo("║              Creado por Lucas Sogaray        ║", "gris"))
     print(estilo("╚══════════════════════════════════════════════╝", "cian"))
 
@@ -128,24 +130,92 @@ def mostrar_menu():
     return categorias
 
 
-def mostrar_categoria(categoria):
-    lista_paquetes = paquetes[categoria]
-
-    limpiar()
-    mostrar_encabezado()
-    print("\n" + estilo(categoria.upper(), "cian", "negrita"))
-    print(estilo("────────────────────────────────────────────────", "gris"))
-    print(
-        f"{estilo('Paquetes disponibles:', 'gris')} "
-        f"{estilo(len(lista_paquetes), 'verde', 'negrita')}\n"
+def analizar_comando_instalacion(comando):
+    """Acepta únicamente comandos simples de instalación pkg o pip."""
+    coincidencia = re.fullmatch(
+        r"(pkg|pip) install ([A-Za-z0-9][A-Za-z0-9._+:-]*)",
+        comando.strip(),
     )
+    if not coincidencia:
+        return None
 
-    for nombre, comando in lista_paquetes.items():
-        print(f"  {estilo('•', 'amarillo')} {estilo(nombre, 'verde', 'negrita')}")
-        print(f"    {estilo(comando, 'cian')}")
+    gestor, paquete = coincidencia.groups()
+    return gestor, paquete
 
-    print("\n" + estilo("────────────────────────────────────────────────", "gris"))
-    pausar("Presiona Enter para volver al catálogo...")
+
+def ejecutar_instalacion(comando):
+    """Ejecuta una instalación sin pasar por un intérprete de comandos."""
+    analizado = analizar_comando_instalacion(comando)
+    if analizado is None:
+        print(estilo("Comando no permitido. Solo se aceptan instalaciones pkg o pip.", "rojo"))
+        pausar("Presiona Enter para continuar...")
+        return
+
+    gestor, paquete = analizado
+    if gestor == "pkg":
+        argumentos = ["pkg", "install", paquete]
+        comando_visible = f"pkg install {paquete}"
+    else:
+        argumentos = [sys.executable, "-m", "pip", "install", paquete]
+        comando_visible = f"{sys.executable} -m pip install {paquete}"
+
+    print("\n" + estilo("PACKAGE RUNNER", "cian", "negrita"))
+    print(f"{estilo('Gestor:', 'gris')} {gestor}")
+    print(f"{estilo('Paquete:', 'gris')} {paquete}")
+    print(f"{estilo('Comando:', 'gris')} {comando_visible}")
+    print(estilo("El instalador puede modificar el entorno de Termux/Python.", "amarillo"))
+    respuesta = leer_entrada(estilo("¿Ejecutar la instalación? [s/N]: ", "amarillo"))
+    if respuesta.casefold() not in ("s", "si", "sí"):
+        print(estilo("Instalación cancelada.", "amarillo"))
+        pausar("Presiona Enter para continuar...")
+        return
+
+    print("\n" + estilo("Iniciando instalación...", "cian", "negrita"))
+    try:
+        resultado = subprocess.run(argumentos, check=False)
+    except FileNotFoundError:
+        print(estilo(f"No se encontró el ejecutable necesario para {gestor}.", "rojo"))
+    except OSError as error:
+        print(estilo(f"No se pudo iniciar el instalador: {error}", "rojo"))
+    else:
+        if resultado.returncode == 0:
+            print(estilo("\\nInstalación finalizada correctamente.", "verde", "negrita"))
+        else:
+            print(estilo(f"\\nEl instalador terminó con código {resultado.returncode}.", "rojo"))
+    pausar("Presiona Enter para volver a los paquetes...")
+
+
+def mostrar_categoria(categoria):
+    lista_paquetes = list(paquetes[categoria].items())
+
+    while True:
+        limpiar()
+        mostrar_encabezado()
+        print("\\n" + estilo(categoria.upper(), "cian", "negrita"))
+        print(estilo("Selecciona un paquete para ver su comando o instalarlo.", "gris"))
+        print(estilo("────────────────────────────────────────────────", "gris"))
+        print(f"{estilo('Paquetes disponibles:', 'gris')} {estilo(len(lista_paquetes), 'verde', 'negrita')}\\n")
+
+        for numero, (nombre, comando) in enumerate(lista_paquetes, start=1):
+            print(f"  {estilo(f'{numero:>3}.', 'amarillo')} {estilo(nombre, 'verde', 'negrita')}")
+            print(f"       {estilo(comando, 'cian')}")
+
+        print("\\n  " + estilo("0. Volver", "rojo"))
+        print(estilo("────────────────────────────────────────────────", "gris"))
+        opcion = leer_entrada(estilo("Selecciona un paquete: ", "amarillo"))
+
+        if opcion == "0":
+            return
+        if not opcion.isdigit() or not 1 <= int(opcion) <= len(lista_paquetes):
+            pausar("Selección no válida. Presiona Enter para continuar...")
+            continue
+
+        nombre, comando = lista_paquetes[int(opcion) - 1]
+        limpiar()
+        mostrar_encabezado()
+        print("\\n" + estilo(f"PAQUETE: {nombre}", "cian", "negrita"))
+        print(f"{estilo('Comando del catálogo:', 'gris')} {comando}")
+        ejecutar_instalacion(comando)
 
 
 def sincronizar_catalogo(origen):
