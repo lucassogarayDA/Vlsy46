@@ -20,6 +20,8 @@ COLORES = {
     "reset": "\033[0m",
 }
 
+VERSION = "2.0.0"
+
 COLORES_ACTIVOS = sys.stdout.isatty() and os.environ.get("NO_COLOR") is None
 
 
@@ -54,7 +56,7 @@ def pausar(mensaje):
 def mostrar_encabezado():
     print(estilo("╔══════════════════════════════════════════════╗", "cian"))
     print(estilo("║                    Vlsy46                    ║", "cian", "negrita"))
-    print(estilo("║                   versión 2.0.0              ║", "gris"))
+    print(estilo(f"║                   versión {VERSION:<12}║", "gris"))
     print(estilo("║              Creado por Lucas Sogaray        ║", "gris"))
     print(estilo("╚══════════════════════════════════════════════╝", "cian"))
 
