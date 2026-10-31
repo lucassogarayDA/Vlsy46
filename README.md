@@ -12,7 +12,8 @@ Vlsy46 es una herramienta de línea de comandos escrita en Python que funciona c
 - Catálogo organizado en categorías.
 - Menú interactivo con recuento de categorías y paquetes.
 - Vista detallada de los paquetes de cada categoría.
-- **Búsqueda global** por nombre de paquete o por categoría.\n- **Package Runner:** permite seleccionar un paquete desde su categoría, revisar el comando y confirmar su instalación mediante `pkg` o `pip.
+- **Búsqueda global** por nombre de paquete o por categoría.
+- **Package Runner:** permite seleccionar un paquete desde su categoría, revisar el comando y confirmar su instalación mediante `pkg` o `pip`.
 - Interfaz con colores ANSI para distinguir títulos, opciones, comandos y mensajes.
 - Los colores se desactivan cuando la salida no es una terminal interactiva o cuando está definida la variable de entorno `NO_COLOR`.
 - Validación de las opciones ingresadas y manejo de cancelaciones con `Ctrl+C` o fin de entrada.
@@ -43,7 +44,9 @@ No hace falta instalar paquetes adicionales de Python para ejecutar Vlsy46.
 
 ## Cómo usar el menú
 
-- Ingresa el número de una categoría para ver sus paquetes.\n- Dentro de una categoría, selecciona el número de un paquete para revisar su comando e iniciar una instalación confirmada.\n- Escribe **0** para volver al catálogo desde la lista de paquetes.
+- Ingresa el número de una categoría para ver sus paquetes.
+- Dentro de una categoría, selecciona el número de un paquete para revisar su comando e iniciar una instalación confirmada.
+- Escribe **0** para volver al catálogo desde la lista de paquetes.
 - Escribe **B** para abrir la búsqueda global.
 - En la búsqueda, escribe el nombre de un paquete o una parte del nombre de una categoría.
 - Escribe **0** para salir.
@@ -88,9 +91,9 @@ Asegúrate de que el comando corresponda al gestor y al entorno donde se utiliza
 
 ## Importante
 
-Vlsy46 **no ejecuta comandos ni instala paquetes automáticamente**. Solo muestra los comandos para que puedas revisarlos y decidir si quieres copiarlos y ejecutarlos manualmente.
+Vlsy46 no ejecuta instalaciones automáticamente. Package Runner muestra el comando y solicita confirmación antes de iniciar `pkg install` o `python -m pip install`. Los comandos se ejecutan como argumentos separados, sin utilizar una shell.
 
-Comprueba siempre que cada comando sea adecuado para tu dispositivo, versión de Termux o entorno de Python antes de ejecutarlo.
+Las instalaciones pueden modificar el entorno de Termux/Python y requerir conexión, espacio o dependencias adicionales. Revisa el paquete y confirma solo si deseas instalarlo. La compatibilidad de cada paquete depende del dispositivo y del entorno.
 
 ## Licencia
 
