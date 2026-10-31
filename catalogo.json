@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "catalog_version": 2,
+  "catalog_version": 3,
   "updated_at": "2026-10-31",
   "packages": {
     "sistema": {
@@ -10,7 +10,19 @@
       "htop": "pkg install htop",
       "tree": "pkg install tree",
       "neofetch": "pkg install neofetch",
-      "tsu": "pkg install tsu"
+      "tsu": "pkg install tsu",
+      "gnupg": "pkg install gnupg",
+      "lzip": "pkg install lzip",
+      "file": "pkg install file",
+      "bc": "pkg install bc",
+      "gawk": "pkg install gawk",
+      "lua": "pkg install lua",
+      "openssl": "pkg install openssl",
+      "valac": "pkg install valac",
+      "gperf": "pkg install gperf",
+      "spirv-tools": "pkg install spirv-tools",
+      "glslang": "pkg install glslang",
+      "uuid-utils": "pkg install uuid-utils"
     },
     "red": {
       "curl": "pkg install curl",
@@ -157,7 +169,11 @@
       "nltk": "pip install nltk",
       "spacy": "pip install spacy",
       "biopython": "pip install biopython",
-      "astropy": "pip install astropy"
+      "astropy": "pip install astropy",
+      "babel": "pip install babel",
+      "pint": "pip install pint",
+      "mpmath": "pip install mpmath",
+      "networkx": "pip install networkx"
     },
     "Cloud": {
       "boto3": "pip install boto3",
@@ -185,6 +201,125 @@
       "fzf": "pkg install fzf",
       "ripgrep": "pkg install ripgrep",
       "fd": "pkg install fd"
+    },
+    "compilacion": {
+      "autoconf": "pkg install autoconf",
+      "automake": "pkg install automake",
+      "bison": "pkg install bison",
+      "flex": "pkg install flex",
+      "gettext": "pkg install gettext",
+      "libtool": "pkg install libtool",
+      "llvm-tools": "pkg install llvm-tools",
+      "m4": "pkg install m4",
+      "ninja": "pkg install ninja",
+      "perl": "pkg install perl",
+      "pkg-config": "pkg install pkg-config",
+      "patch": "pkg install patch",
+      "scons": "pkg install scons",
+      "re2c": "pkg install re2c"
+    },
+    "documentacion": {
+      "asciidoc": "pkg install asciidoc",
+      "asciidoctor": "pkg install asciidoctor",
+      "help2man": "pkg install help2man",
+      "intltool": "pkg install intltool",
+      "scdoc": "pkg install scdoc",
+      "texinfo": "pkg install texinfo",
+      "xmlto": "pkg install xmlto"
+    },
+    "configuracion": {
+      "toml": "pip install toml",
+      "tomli-w": "pip install tomli-w",
+      "tomlkit": "pip install tomlkit",
+      "jinja2": "pip install jinja2",
+      "mako": "pip install mako",
+      "python-decouple": "pip install python-decouple",
+      "dynaconf": "pip install dynaconf",
+      "omegaconf": "pip install omegaconf"
+    },
+    "texto y web": {
+      "markdown": "pip install markdown",
+      "markdown2": "pip install markdown2",
+      "mistune": "pip install mistune",
+      "html5lib": "pip install html5lib",
+      "feedparser": "pip install feedparser",
+      "defusedxml": "pip install defusedxml",
+      "chardet": "pip install chardet",
+      "charset-normalizer": "pip install charset-normalizer",
+      "idna": "pip install idna"
+    },
+    "red y protocolos": {
+      "urllib3": "pip install urllib3",
+      "httpx": "pip install httpx",
+      "httpcore": "pip install httpcore",
+      "anyio": "pip install anyio",
+      "trio": "pip install trio",
+      "websockets": "pip install websockets",
+      "websocket-client": "pip install websocket-client",
+      "dnspython": "pip install dnspython",
+      "h11": "pip install h11",
+      "h2": "pip install h2",
+      "hypercorn": "pip install hypercorn",
+      "starlette": "pip install starlette",
+      "werkzeug": "pip install werkzeug",
+      "aiofiles": "pip install aiofiles",
+      "python-multipart": "pip install python-multipart"
+    },
+    "validacion y datos": {
+      "attrs": "pip install attrs",
+      "cattrs": "pip install cattrs",
+      "marshmallow": "pip install marshmallow",
+      "jsonschema": "pip install jsonschema",
+      "jsonpointer": "pip install jsonpointer",
+      "jsonpatch": "pip install jsonpatch",
+      "cerberus": "pip install cerberus",
+      "voluptuous": "pip install voluptuous",
+      "cachetools": "pip install cachetools",
+      "platformdirs": "pip install platformdirs",
+      "filelock": "pip install filelock"
+    },
+    "terminal y logs": {
+      "loguru": "pip install loguru",
+      "structlog": "pip install structlog",
+      "colorlog": "pip install colorlog",
+      "alive-progress": "pip install alive-progress",
+      "progressbar2": "pip install progressbar2",
+      "humanfriendly": "pip install humanfriendly",
+      "prettytable": "pip install prettytable",
+      "wcwidth": "pip install wcwidth",
+      "prompt-toolkit": "pip install prompt-toolkit",
+      "questionary": "pip install questionary"
+    },
+    "archivos y multimedia": {
+      "qrcode": "pip install qrcode",
+      "segno": "pip install segno",
+      "python-barcode": "pip install python-barcode",
+      "mutagen": "pip install mutagen",
+      "python-pptx": "pip install python-pptx",
+      "odfpy": "pip install odfpy",
+      "xlrd": "pip install xlrd",
+      "xlsxwriter": "pip install xlsxwriter"
+    },
+    "fechas y observabilidad": {
+      "ics": "pip install ics",
+      "icalendar": "pip install icalendar",
+      "semver": "pip install semver",
+      "packaging": "pip install packaging",
+      "distro": "pip install distro",
+      "python-json-logger": "pip install python-json-logger",
+      "sentry-sdk": "pip install sentry-sdk",
+      "backoff": "pip install backoff",
+      "tenacity": "pip install tenacity",
+      "schedule": "pip install schedule",
+      "APScheduler": "pip install APScheduler"
+    },
+    "desarrollo y testing": {
+      "lark": "pip install lark",
+      "pyparsing": "pip install pyparsing",
+      "nose2": "pip install nose2",
+      "pipdeptree": "pip install pipdeptree",
+      "pip-audit": "pip install pip-audit",
+      "antlr4-python3-runtime": "pip install antlr4-python3-runtime"
     }
   }
 }
