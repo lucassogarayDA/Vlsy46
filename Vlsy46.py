@@ -179,9 +179,9 @@ def ejecutar_instalacion(comando):
         print(estilo(f"No se pudo iniciar el instalador: {error}", "rojo"))
     else:
         if resultado.returncode == 0:
-            print(estilo("\\nInstalación finalizada correctamente.", "verde", "negrita"))
+            print(estilo("\nInstalación finalizada correctamente.", "verde", "negrita"))
         else:
-            print(estilo(f"\\nEl instalador terminó con código {resultado.returncode}.", "rojo"))
+            print(estilo(f"\nEl instalador terminó con código {resultado.returncode}.", "rojo"))
     pausar("Presiona Enter para volver a los paquetes...")
 
 
@@ -191,16 +191,16 @@ def mostrar_categoria(categoria):
     while True:
         limpiar()
         mostrar_encabezado()
-        print("\\n" + estilo(categoria.upper(), "cian", "negrita"))
+        print("\n" + estilo(categoria.upper(), "cian", "negrita"))
         print(estilo("Selecciona un paquete para ver su comando o instalarlo.", "gris"))
         print(estilo("────────────────────────────────────────────────", "gris"))
-        print(f"{estilo('Paquetes disponibles:', 'gris')} {estilo(len(lista_paquetes), 'verde', 'negrita')}\\n")
+        print(f"{estilo('Paquetes disponibles:', 'gris')} {estilo(len(lista_paquetes), 'verde', 'negrita')}\n")
 
         for numero, (nombre, comando) in enumerate(lista_paquetes, start=1):
             print(f"  {estilo(f'{numero:>3}.', 'amarillo')} {estilo(nombre, 'verde', 'negrita')}")
             print(f"       {estilo(comando, 'cian')}")
 
-        print("\\n  " + estilo("0. Volver", "rojo"))
+        print("\n  " + estilo("0. Volver", "rojo"))
         print(estilo("────────────────────────────────────────────────", "gris"))
         opcion = leer_entrada(estilo("Selecciona un paquete: ", "amarillo"))
 
@@ -213,7 +213,7 @@ def mostrar_categoria(categoria):
         nombre, comando = lista_paquetes[int(opcion) - 1]
         limpiar()
         mostrar_encabezado()
-        print("\\n" + estilo(f"PAQUETE: {nombre}", "cian", "negrita"))
+        print("\n" + estilo(f"PAQUETE: {nombre}", "cian", "negrita"))
         print(f"{estilo('Comando del catálogo:', 'gris')} {comando}")
         ejecutar_instalacion(comando)
 
