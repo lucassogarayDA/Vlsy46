@@ -169,3 +169,12 @@ paquetes = {
         "pytz": "pip install pytz",
     },
 }
+
+
+# Catálogo local de respaldo y última versión aceptada de AutoSync.
+from autosync import cargar_cache
+
+_cache = cargar_cache()
+VERSION_CATALOGO = _cache["catalog_version"] if _cache else 1
+if _cache:
+    paquetes = _cache["packages"]
