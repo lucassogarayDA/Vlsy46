@@ -38,6 +38,51 @@ def mostrar_encabezado():
     print(estilo("╚══════════════════════════════════════════════╝", "cian"))
 
 
+def buscar_paquetes(consulta):
+    coincidencias = []
+    consulta = consulta.casefold()
+
+    for categoria, lista_paquetes in paquetes.items():
+        for nombre, comando in lista_paquetes.items():
+            if consulta in nombre.casefold() or consulta in categoria.casefold():
+                coincidencias.append((nombre, comando, categoria))
+
+    return coincidencias
+
+
+def mostrar_busqueda():
+    limpiar()
+    mostrar_encabezado()
+    print("\n" + estilo("BÚSQUEDA GLOBAL", "cian", "negrita"))
+    print(estilo("Busca por nombre de paquete o categoría.", "gris"))
+    consulta = input("\n" + estilo("Buscar: ", "amarillo")).strip()
+
+    if not consulta:
+        input("\n" + estilo("La búsqueda está vacía. Presiona Enter...", "rojo"))
+        return
+
+    resultados = buscar_paquetes(consulta)
+    limpiar()
+    mostrar_encabezado()
+    print("\n" + estilo(f"RESULTADOS PARA: {consulta}", "cian", "negrita"))
+    print(estilo("────────────────────────────────────────────────", "gris"))
+
+    if not resultados:
+        print("\n" + estilo("No se encontraron coincidencias.", "rojo"))
+    else:
+        print(
+            f"\n{estilo('Coincidencias:', 'gris')} "
+            f"{estilo(len(resultados), 'verde', 'negrita')}\n"
+        )
+        for nombre, comando, categoria in resultados:
+            print(f"  {estilo('•', 'amarillo')} {estilo(nombre, 'verde', 'negrita')}")
+            print(f"    {estilo('Categoría:', 'gris')} {categoria}")
+            print(f"    {estilo(comando, 'cian')}\n")
+
+    print(estilo("────────────────────────────────────────────────", "gris"))
+    input(estilo("Presiona Enter para volver al catálogo...", "amarillo"))
+
+
 def mostrar_menu():
     categorias = list(paquetes.keys())
     total_paquetes = sum(len(lista) for lista in paquetes.values())
@@ -57,7 +102,8 @@ def mostrar_menu():
         cantidad_texto = estilo(f"[{cantidad} paquetes]", "gris")
         print(f"  {numero_texto} {categoria_texto} {cantidad_texto}")
 
-    print("\n  " + estilo("0. Salir", "rojo"))
+    print("\n  " + estilo("B. Buscar paquetes", "cian", "negrita"))
+    print("  " + estilo("0. Salir", "rojo"))
     print(estilo("────────────────────────────────────────────────", "gris"))
     return categorias
 
@@ -86,14 +132,18 @@ def main():
     while True:
         limpiar()
         categorias = mostrar_menu()
-        opcion = input("\n" + estilo("Selecciona una categoría: ", "amarillo")).strip()
+        opcion = input("\n" + estilo("Selecciona una categoría o B para buscar: ", "amarillo")).strip()
 
         if opcion == "0":
             print("\n" + estilo("¡Hasta luego!", "verde", "negrita"))
             break
 
+        if opcion.casefold() == "b":
+            mostrar_busqueda()
+            continue
+
         if not opcion.isdigit():
-            input("\n" + estilo("Entrada no válida. Escribe un número. Presiona Enter...", "rojo"))
+            input("\n" + estilo("Entrada no válida. Escribe un número o B. Presiona Enter...", "rojo"))
             continue
 
         numero = int(opcion)
