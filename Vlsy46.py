@@ -54,7 +54,7 @@ def pausar(mensaje):
 def mostrar_encabezado():
     print(estilo("╔══════════════════════════════════════════════╗", "cian"))
     print(estilo("║                    Vlsy46                    ║", "cian", "negrita"))
-    print(estilo("║                   versión 1.2.0              ║", "gris"))
+    print(estilo("║                   versión 2.0.0              ║", "gris"))
     print(estilo("║              Creado por Lucas Sogaray        ║", "gris"))
     print(estilo("╚══════════════════════════════════════════════╝", "cian"))
 
